@@ -33,7 +33,7 @@ class WebDriverPerfBaseTest(unittest.TestCase):
         # 3. Add exec permission
         #   $ chmod a+x ./thirdParty/geckodriver/geckodriver
         # 4. Add to PATH
-        #   $ echo 'PATH="$PATH:'`pwd`'/thirdParty/geckodriver/geckodriver"' >> ~/.bash_profile
+        #   $ echo 'PATH="$PATH:'`pwd`'/thirdParty/geckodriver"' >> ~/.bash_profile
         #   $ source ~/.bash_profile
         #
         # TEST RUN
