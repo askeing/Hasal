@@ -1,1 +1,1 @@
-tests.regression.gdoc.test_firefox_gdoc_read_basic_txt_1
+tests.regression.gdoc.test_firefox_gdoc_ail_type_10p_txt
