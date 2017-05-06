@@ -230,3 +230,96 @@ class WebApp(object):
         self.common.system_print(action_name)
 
         return screenshot, current_time
+
+
+def _get_loop_seconds(object_amount, total_second):
+    """
+    Getting the loop seconds base on the object_amount, min loop time is 1 sec
+    @param object_amount:
+    @param total_second:
+    @return:
+    """
+    return max(int(total_second / object_amount), 1)
+
+
+def _wait_component(component, timeout, similarity):
+    """
+    Wait for component loaded.
+    @param component: Specify the wait component, which is an array of [Sikuli pattern, offset-x, offset-y].
+    @param timeout: Wait timeout second, the min timeout is 1 sec.
+    @param similarity: The pattern comparing similarity, from 0 to 1.
+    """
+    # get the loop time base on the pattern amount of component, min loop time is 10 times
+    loop_time = _get_loop_seconds(object_amount=len(component), total_second=timeout) * 10
+
+    # wait for component exists, then execute the function
+    is_exists = False
+    final_pattern = None
+    for counter in range(loop_time):
+        if is_exists:
+            break
+        for p, _, _ in component:
+            final_pattern = p
+            if exists(Pattern(p).similar(similarity), 0.1):
+                break
+            final_pattern = p
+    wait(Pattern(final_pattern).similar(similarity), 1)
+
+
+class BaseWaitDecorator(object):
+    """
+    Base Decorator for actions.
+    """
+    def __init__(self, component=None, timeout=10, similarity=0.70):
+        self.component = component
+        # the min timeout is 1 sec
+        self.timeout = max(timeout, 1)
+        self.similarity = similarity
+
+    def __call__(self, *args, **kwargs):
+        raise NotImplementedError('Can not use BaseWaitDecorator.')
+
+    def inner_wait(self):
+        if not self.component:
+            # there is not component to wait
+            wait(self.timeout)
+        else:
+            _wait_component(self.component, self.timeout, self.similarity)
+
+
+class WaitBeforeAction(BaseWaitDecorator):
+    """
+    Decorator for actions.
+    Waiting the component exists, if there is no specified component, wait until timeout.
+    And then executing the function.
+    Usage:
+        @WaitBeforeAction(component, timeout, similarity)
+        - component: Specify the wait component, which is an array of [Sikuli pattern, offset-x, offset-y].
+        - timeout: Wait timeout second, the min timeout is 1 sec. Default is 10 sec.
+        - similarity: The pattern comparing similarity, from 0 to 1. Default is 0.70.
+    """
+    def __call__(self, func):
+        def wrapper(*args, **kwargs):
+            self.inner_wait()
+            # execute the function
+            func(*args, **kwargs)
+        return wrapper
+
+
+class WaitAfterAction(BaseWaitDecorator):
+    """
+    Decorator for actions.
+    Executing the function.
+    And then waiting the component exists, if there is no specified component, wait until timeout..
+    Usage:
+        @WaitAfterAction(component, timeout, similarity)
+        - component: Specify the wait component, which is an array of [Sikuli pattern, offset-x, offset-y].
+        - timeout: Wait timeout second, the min timeout is 1 sec. Default is 10 sec.
+        - similarity: The pattern comparing similarity, from 0 to 1. Default is 0.70.
+    """
+    def __call__(self, func):
+        def wrapper(*args, **kwargs):
+            # execute the function
+            func(*args, **kwargs)
+            self.inner_wait()
+        return wrapper
