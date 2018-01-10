@@ -1,0 +1,11 @@
+[package]
+name = "crop"
+version = "0.1.0"
+authors = ["askeing <askeing@gmail.com>"]
+
+[dependencies]
+libc = "*"
+image = "*"
+
+[lib]
+crate-type = ["cdylib"]

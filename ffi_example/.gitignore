@@ -1,0 +1,8 @@
+target/
+
+*.dylib
+*.so
+*.dll
+
+rust_output_*.jpg
+py_output_*.jpg
