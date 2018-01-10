@@ -1,5 +1,6 @@
 import os
 import time
+import shutil
 import logging
 from PIL import Image
 
@@ -97,8 +98,9 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format=default_log_format, datefmt=default_datefmt)
 
     # define the const
+    output_folder = 'output_img'
     input_filename = 'Kings_College_London_Chapel_2.jpg'
-    output_number = 10
+    output_number = 100
     crop_area = {
         'x': 3050,
         'y': 2190,
@@ -106,13 +108,17 @@ if __name__ == '__main__':
         'height': 600
     }
 
+    if os.path.exists(output_folder) and os.path.isdir(output_folder):
+        shutil.rmtree(output_folder)
+    os.makedirs(output_folder)
+
     print('### Crop Image {} times ###'.format(output_number))
 
     # Rust FFI part
     rust_image_file_list = [
         {
             'input_fp': input_filename,
-            'output_fp': 'rust_output_{}.jpg'.format(i)} for i in range(0, output_number)
+            'output_fp': os.path.join(output_folder, 'rust_output_{}.jpg'.format(i))} for i in range(0, output_number)
     ]
     s_time = time.time()
     rust_crop_multiple_images(rust_image_file_list, crop_area)
@@ -123,7 +129,7 @@ if __name__ == '__main__':
     py_image_file_list = [
         {
             'input_fp': input_filename,
-            'output_fp': 'py_output_{}.jpg'.format(i)} for i in range(0, output_number)
+            'output_fp': os.path.join(output_folder, 'py_output_{}.jpg'.format(i))} for i in range(0, output_number)
     ]
     s_time = time.time()
     crop_multiple_images(py_image_file_list, crop_area)

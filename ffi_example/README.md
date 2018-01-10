@@ -2,7 +2,7 @@
 
 ## Install `Rust` and `Cargo`
 
-You can follow the [Installation Guide](https://doc.rust-lang.org/cargo/getting-started/installation.html) to install `Rust` and `Cargo`.
+You can follow the [Install Rust](https://www.rust-lang.org/en-US/install.html) or [Installation Guide](https://doc.rust-lang.org/cargo/getting-started/installation.html) to install `Rust` and `Cargo`.
 
 ### Windows
 
@@ -47,7 +47,7 @@ $ python image_crop_tester.py
 # Clean output result
 
 ```bash
-$ rm rust_output_*.jpg py_output_*.jpg
+$ rm output_img
 ```
 
 # Reference
@@ -56,3 +56,8 @@ $ rm rust_output_*.jpg py_output_*.jpg
   - Photo by DAVID ILIFF.
   - License: [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/deed.en)
   - Source: [File:King's College London Chapel 2, London - Diliff.jpg](https://en.wikipedia.org/wiki/File:King%27s_College_London_Chapel_2,_London_-_Diliff.jpg).
+
+- Rust
+  - [Rust Platform Support](https://forge.rust-lang.org/platform-support.html)
+  - [Taking Rust everywhere with rustup](https://blog.rust-lang.org/2016/05/13/rustup.html)
+  - [rustup: the Rust toolchain installer #Cross-compilation](https://github.com/rust-lang-nursery/rustup.rs#cross-compilation)

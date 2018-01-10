@@ -4,5 +4,6 @@ target/
 *.so
 *.dll
 
+output_img/
 rust_output_*.jpg
 py_output_*.jpg
